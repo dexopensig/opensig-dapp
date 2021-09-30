@@ -1,0 +1,105 @@
+body#override {
+
+  .multiselect__placeholder{
+	margin-bottom:0;
+	color:mix($text, $containerBG);
+  }
+
+  .map-passed-argument{
+	border-radius: 4px;
+	background: mix($containerBG, $accent, 90%);
+	padding: 2px 8px;
+	text-align: center;
+	font-size: 0.8em;
+	margin-right: 8px;
+  }
+
+  .map-passed-arguments-container{
+	display: flex;
+  }
+
+  .map-abi-arguments-container{
+	margin-top: 8px;
+	border-radius: 4px;
+
+	.map-abi-argument-row{
+	  display: flex;
+	  background-color:  mix($headerBG, $containerBG, 50%);
+	  margin-bottom: 8px;
+
+	  .map-abi-argument-name{
+		border-radius: 4px 0px 0px 4px;
+		background-color: mix($headerBG, $accent, 90%);
+		font-size:14px;
+		padding:2px 8px;
+	  }
+
+	  .map-abi-argument-row{
+		margin-bottom:8px;
+	  }
+
+	  .map-abi-argument-value {
+		width:100%;
+		border-radius: 0px 4px 4px 0px;
+		padding:0px 0px 0px 8px;
+
+		.multiselect__placeholder{
+		  margin-bottom:0;
+		  color:mix($text, $containerBG);
+		}
+
+		.multiselect{
+		  min-height:20px;
+		  height:100%;
+
+		  .multiselect__select{
+			height:28px;
+		  }
+
+		  .multiselect__content-wrapper{
+			border:0;
+			background-color: darken($containerBG, 2%);
+		  }
+
+		  &__single, &__input{
+			margin-bottom:0;
+			background-color: transparent;
+			color:$text;
+			padding:2px 0px 0px 0px;
+			font-size:14px;
+		  }
+
+		  &__tags{
+			min-height:20px;
+			min-width:100px;
+			padding:0px 0px 0px 4px;
+			border:0;
+		  }
+
+		  &__tags, &__spinner, &__content{
+			background-color: transparent;
+			color:$text;
+		  }
+
+		  &__option--highlight, &__option--highlight:after{
+			background: $headerBG;
+		  }
+
+		  &__option--selected{
+			background: mix($headerBG, $accent);
+			color:$text;
+		  }
+		}
+	  }
+	}
+  }
+
+  textarea.transformer-map-textarea{
+	height:300px;
+	border-color: $containerBorderColor;
+	background: darken($containerBG, 2%);
+	color:$text;
+	font-size:0.8em;
+  }
+
+}

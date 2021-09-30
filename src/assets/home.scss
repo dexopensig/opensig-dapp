@@ -1,0 +1,57 @@
+#home{
+  h1, h2{
+	border-bottom:1px solid #FFF;
+	padding-bottom: 12px;
+	text-align:center;
+	border-bottom-color: $headerBG;
+	color:$text;
+  }
+
+  color:mix($containerBG, $text, 30%);
+
+  h3{
+	color:mix($containerBG, $text, 20%);
+	margin-top: 40px;
+	margin-bottom: 20px;
+  }
+
+  h5{
+	margin:24px 0px 8px 0px;
+  }
+
+  .jumbo{
+	font-size:2em;
+	margin-bottom: 2em;
+  }
+
+  .card-home {
+	border:none;
+	background-color: darken($containerBG, 2%);
+	.card-header{
+	  font-size:1.4em;
+	  background-color: mix($containerBG, $headerBG);
+	  border-bottom-color: darken($headerBG, 1%);
+	}
+	.card-title{
+	  padding-top: 4px;
+	  text-align: center;
+	}
+
+	.card-body{
+	  span{
+		font-size:24px;
+	  }
+	}
+	margin-bottom: 16px;
+  }
+
+  .home-list{
+	padding-left:0;
+	li{
+	  margin:0;
+	  padding:0;
+	  list-style: none;
+	}
+  }
+}
+

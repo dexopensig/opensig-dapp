@@ -1,0 +1,92 @@
+<div>
+	<div id="app" class="mb-5">
+		<div v-if="enabled()" >
+			<nav class="navbar navbar-expand-lg navbar-dark">
+				<div class="container-fluid">
+					<router-link to="/" class="navbar-brand">OpenSig</router-link>
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="ms-5 collapse navbar-collapse" id="navbarSupportedContent">
+						<nav>
+							<ul class="nav mb-2 mb-lg-0">
+								<li :class="['nav-item', !$libRoute.isLinkActive('/wallet')||'selected']">
+									<router-link class="nav-link" to="/wallet">Wallet</router-link>
+								</li>
+								<li :class="['nav-item', !$libRoute.isLinkActive('/settings', false)||'selected']">
+									<router-link class="nav-link" to="/settings">Settings</router-link>
+								</li>
+							</ul>
+						</nav>
+					</div>
+
+					<div>
+						<div class="col metamask_login ms-4">
+							<font-awesome-icon icon="key" class="me-1" />
+							<truncated-address :address="state.selectedMSW.address" v-if="state.selectedMSW.address"/>
+							<span v-else>No wallet selected</span>
+						</div>
+					</div>
+
+					<div>
+						<div class="col metamask_login ms-4">
+							<font-awesome-icon icon="wallet" class="me-1" /> <truncated-address :address="metamaskAddress" />
+						</div>
+					</div>
+					<div class="ms-4" v-if="state.displayNonce">
+						<font-awesome-icon icon="clock" /> {{ currentNonce }}
+					</div>
+				</div>
+			</nav>
+
+			<div v-if="trieError" class="alert alert-warning text-center mt-5">
+				Network needs to be restarted
+			</div>
+
+			<div class="container container-main">
+				<router-view :meta-enabled="state.metaEnabled" :metaMaskAddress="state.metamaskAddress" />
+			</div>
+
+
+		</div>
+		<div v-else>
+			Please reload and connect metamask
+		</div>
+
+		<vue-metamask userMessage="msg"
+			  @onMetamaskComplete="onMetamaskComplete"
+			  @onMetamaskChange="onMetamaskChange" />
+
+		<!-- Modal -->
+		<div v-if="showProviderModal" class="modal show" style="display:block;" tabindex="-1" >
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="basicModalLabel">Web3 RPC Provider</h5>
+						<button type="button" class="btn-close" v-on:click="hideModal()" ></button>
+					</div>
+					<div class="modal-body">
+						<label>Provider RPC URL</label>
+						<div class="row">
+							<div class="col">
+								<input class="form-control" v-model="txtProvider" />
+							</div>
+						</div>
+					</div>
+
+					<div class="modal-footer">
+						<button class="btn btn-primary" v-on:click="saveProvider()">Update</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="fixed-bottom-bar">
+			<div class="row">
+				<div class="col-auto" v-on:click="displayProviderModal()"><font-awesome-icon icon="network-wired" /> {{ getNetworkId() }}</div>
+				<div class="col-auto pulse" :class="getPulseClass('block')"><font-awesome-icon icon="cube" /> {{ getBlock() }}</div>
+			</div>
+		</div>
+		<notifications width="400" :closeOnClick="false" />
+	</div>
+</div>

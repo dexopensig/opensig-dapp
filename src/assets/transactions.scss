@@ -1,0 +1,81 @@
+body#override {
+
+  .transaction-value-zero{
+	opacity: 0.2;
+  }
+
+  .transaction-status-icon{
+	display: inline-block;
+	min-width:24px;
+  }
+
+  .transaction-status-date{
+	display: inline-block;
+  }
+
+  .transaction-validators-container{
+	display:flex;
+  }
+
+  .transaction-validators-counter{
+	display:inline-block;
+	margin-right: 12px;
+  }
+
+  .transaction-function{
+	border-radius: 4px;
+	background: mix($containerBG, $accent, 90%);
+	padding: 2px;
+	text-align: center;
+	font-size: 0.8em;
+  }
+
+  .no-transaction-function{
+	border-radius: 4px;
+	border: 1px solid mix($containerBG, $accent, 90%);
+	color:mix($text, $containerBG);
+	padding: 2px;
+	text-align: center;
+	font-size: 0.8em;
+  }
+
+  .transaction-validators{
+	display: flex;
+	flex-direction: row;
+
+	.identicon-image{
+	  border-radius: 32px;
+	  height:24px;
+	  width:24px;
+	  padding:2px;
+	  background:$tableText;
+	  overflow:hidden;
+	  margin-right:4px;
+
+	  svg{
+		vertical-align: baseline;
+		border-radius: 32px;
+	  }
+	}
+  }
+
+  .transaction-details-button{
+	cursor:pointer;
+	text-align: center;
+	font-size:0.7em;
+	line-height: 20px;
+	height:20px;
+	width:20px;
+	background:#FFF;
+	border-radius: 4px;
+	background: mix($containerBG, $accent, 90%);
+
+	&:hover{
+	  background: lighten(mix($containerBG, $accent, 90%), 5%);
+	}
+  }
+
+  .transaction-summary-smaller{
+	font-size:0.9em;
+  }
+}

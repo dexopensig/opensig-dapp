@@ -1,0 +1,457 @@
+$BG: #002034;
+$whiteText:#e5ecf3;
+$text: #c3d7e1;
+$accent:#32C7FA;
+$accentPositive: #48fa89;
+$headerLinkColor:#32C7FA;
+$tickColor: #05e25f;
+$accentNegative: #f24f61;
+$warningAccent: #fef390;
+$infoAccent: #007ffe;
+
+$headerBG: #003256;
+$containerBG: darken($BG, 1%);
+$containerBGHeader: darken($BG, 1%);
+$containerBorderColor:mix($BG, #FFF, 80%);
+
+$headerItemsBG: darken($headerBG, 10%);
+
+$tableText: mix($text, $containerBG, 70%);
+
+@import "~v-tooltip/dist/v-tooltip.css";
+@import "transactions";
+@import "bridge";
+@import "home";
+
+body#override {
+
+  background: $BG;
+  color: $text;
+
+  .table-hoverstyle{//hover already taken
+	tbody tr:hover{
+	  background-color: lighten($containerBG, 2%);
+	}
+  }
+
+  .navbar{
+	height:64px;
+  }
+
+  .navbar-brand{
+	text-indent:50px;
+	background:url("./logo.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+  }
+
+
+  .container-main{
+	margin-top: 40px;
+	/*background:$containerBG;
+	border-radius: 8px;
+	border:1px solid $containerBorderColor;
+	padding:0;*/
+
+	.nav{
+
+	  li{
+		padding:8px 0px;
+		border-bottom:2px solid transparent;
+		margin-bottom:-1px;
+
+		a{
+		  color:mix($accent,$containerBG);
+		}
+
+		&:hover{
+		  a{
+			color:$accent;
+		  }
+		  //border-color:$headerItemsBG;
+		}
+	  }
+	  li.selected{
+		border-color:$accent;
+		a{
+		  color:$accent;
+		}
+	  }
+
+	}
+  }
+
+  h2{
+	color:mix($text, $containerBG, 70%);
+  }
+
+  .text-success{
+	color:$accentPositive !important;
+  }
+
+  .text-warning{
+	color:mix($warningAccent, $containerBG, 75%) !important;
+  }
+
+  .success-highlight{
+	color:$tickColor;
+	-webkit-filter: drop-shadow( 0px 0px 3px rgba(255, 255, 255, .8));
+	filter: drop-shadow( 0px 0px 3px rgba(255, 255, 255, .8));
+  }
+
+  .modal{
+	background:rgba(0, 0, 0, 0.8);
+  }
+
+  .modal-header{
+	background:$headerBG;
+	border:0;
+  }
+
+  .modal-footer{
+	border:0;
+  }
+
+  .alert-success{
+	background: mix($accentPositive, $containerBG, 20%);
+	border-color:$accentPositive;
+	color:$accentPositive;
+  }
+
+  .alert-warning{
+	background: mix($warningAccent, $containerBG, 20%);
+	border-color:$warningAccent;
+	color:$warningAccent;
+  }
+
+  .alert-danger{
+	background: mix($accentNegative, $containerBG, 20%);
+	border-color:$accentNegative;
+	color:$accentNegative;
+  }
+
+  .alert-info{
+	background: mix($infoAccent, $containerBG, 20%);
+	border-color:$infoAccent;
+	color:$infoAccent;
+  }
+
+  .alert-dark{
+	background-color: darken($containerBG, 2%);
+	border:0;
+	color:$text;
+  }
+
+  .alert-light{
+	background-color: lighten($containerBG, 5%);
+	border:0;
+	color:$text;
+  }
+
+  .btn-primary{
+	border:1px solid $accent;
+	background: $headerBG;
+  }
+
+  .btn-success{
+	border:1px solid $accentPositive;
+	background: mix($accentPositive, $containerBG, 20%);
+	color:$accentPositive;
+  }
+
+  .btn-warning{
+	border:1px solid $warningAccent;
+	background: mix($warningAccent, $containerBG, 20%);
+	color:$warningAccent;
+  }
+
+  .btn-danger{
+	border:1px solid $accentNegative;
+	background: mix($accentNegative, $containerBG, 20%);
+	color:$accentNegative;
+  }
+
+  .not-important{
+	color:mix($containerBG, $text, 60%);
+  }
+
+  .pulse-on{
+	color:$accent;
+  }
+
+  .pulse{
+	transition: 0.2s;
+  }
+
+  table{
+
+	//border-radius: 8px;
+
+	.cell-nopad{
+	  padding-left:0px;
+	  padding-right:0px;
+	}
+	.cell-narrow{
+	  width:1%;
+	}
+
+	.no-break{
+	  word-break: keep-all;
+	  white-space: nowrap;
+	}
+	thead{
+	  th{
+		font-weight: normal;
+	  }
+	  th:first-child{
+		border-radius: 4px 4px 0px 0px;
+	  }
+	  th:last-child{
+		//border-radius: 0px 8px 0px 0px;
+	  }
+	  tr{
+		border-bottom:2px solid mix($headerBG, $accent, 70%);
+		background:mix($containerBG, $headerBG, 30%);
+		color:$text;
+		th{
+		  border-bottom: none;
+		}
+	  }
+
+	}
+
+	color:$tableText;
+	tbody{
+	  tr{
+		td{
+		  border:0;
+		  a{
+			text-decoration: none;
+		  }
+		}
+		border-bottom:1px solid lighten($containerBG, 5%);
+	  }
+
+	  tr:last-child{
+		border-bottom:0;
+	  }
+
+	  tr:nth-child(even){
+		//background: lighten($containerBG, 5%);
+	  }
+	}
+  }
+
+  a{
+	color:mix($headerLinkColor, $containerBG, 80%);
+  }
+
+  .navbar {
+	background: $headerBG;
+	padding:0px;
+
+	li{
+	  padding:8px 0px;
+	  border-bottom:2px solid transparent;
+	  a{
+		color:mix($accent, $headerBG);
+	  }
+
+	  &:hover{
+		//border-color:$headerItemsBG;
+	  }
+	}
+	li.selected{
+	  a{
+		color:$accent;
+	  }
+	}
+  }
+
+
+  .form-control {
+	background: $containerBG;
+	border-color: $accent;
+	color:mix($accent, $containerBG, 80%);
+  }
+
+  .card {
+	background: $containerBG;
+	border-color: $containerBorderColor;
+	border-radius: 0.5rem;
+	color:mix($text, $containerBG, 90%);
+  }
+
+  .card-header {
+	//border: 0;
+	//background: $containerBGHeader;
+	border-color: $containerBorderColor;
+	padding: 0;
+	font-size:18px;
+  }
+
+  .metamask_login{
+	svg{
+	  color:$accent;
+	}
+	padding:4px 16px;
+	background:$headerItemsBG;
+	border-radius: 32px;
+  }
+
+  #fixed-bottom-bar{
+	position:fixed;
+	right:16px;
+	bottom:16px;
+	color:#367d91;
+  }
+
+  .vue-notification {
+	margin-top:64px;
+	opacity: 0.9;
+	border-left-width: 4px;
+
+	font-size:14px;
+	font-weight:300;
+	padding:0;
+
+	.notification-title{
+	  font-size:18px;
+	  padding: 8px;
+	  background:rgba(0,0,0,0.15);
+	}
+
+	.notification-content{
+	  padding:8px;
+	}
+
+	span{
+	  font-size:12px;
+	}
+
+	background: mix($infoAccent, $containerBG, 20%);
+	border-color:$infoAccent;
+	color:lighten($infoAccent, 10%);
+
+	&.error {
+	  background: mix($accentNegative, $containerBG, 20%);
+	  background: mix($accentNegative, $containerBG, 20%);
+	  border-color:$accentNegative;
+	  color:$accentNegative;
+	}
+
+	&.success {
+	  background: mix($accentPositive, $containerBG, 20%);
+	  background: mix($accentPositive, $containerBG, 20%);
+	  border-color:$accentPositive;
+	  color:$accentPositive;
+	}
+  }
+
+  .text-success-accent{
+	color:$accentPositive;
+  }
+
+  .input-formatter-table{
+	td.td-key span{
+	  display: block;
+	  padding:0px 8px;
+	  margin: 2px 0px;
+	  border-radius: 4px;
+	  background-color: lighten($containerBG, 3%);
+	  color:mix($text, lighten($containerBG, 10%));
+	  margin-right: 10px;
+	  text-align: right;
+	}
+
+	tr{
+	  border:0;
+	}
+
+  }
+
+  .form-check-input{
+	background:darken($containerBG, 10%);
+	border:1px solid $containerBorderColor;
+	position:relative;
+
+	&:checked{
+	  //background:mix($containerBG, $accent);
+	  position:relative;
+	  &::after{
+		border-radius: 2px;
+		width:60%;
+		display:block;
+		height:60%;
+		background: $accent;
+		font-family: "Font";
+		content:"";
+		position:absolute;
+		color:#FFF;
+		top:20%;
+		left:20%;
+	  }
+	}
+  }
+
+	.drop-zone{
+		border: 2px dashed $headerBG;
+		border-radius: 8px;
+	  	text-align: center;
+	  	padding: 16px;
+
+		.file-uploads{
+		  display: block;
+		}
+
+	  	&.drop-active{
+		  background-color: mix($containerBG, $headerBG);
+		}
+	}
+
+	.card-ov {
+	  border:none;
+	  background-color: darken($containerBG, 2%);
+	  .card-header{
+		background-color: mix($containerBG, $headerBG);
+		border-bottom-color: darken($headerBG, 1%);
+	  }
+	  .card-title{
+		padding-top: 4px;
+		text-align: center;
+	  }
+
+	  .card-body{
+		span{
+		  font-size:24px;
+		}
+	  }
+	  margin-bottom: 16px;
+	}
+
+  .multiselect{
+
+	&__single, &__input{
+	  background-color: darken($containerBG, 2%);
+	  color:$text;
+	}
+
+	&__tags{
+	  border:1px solid $containerBorderColor;
+	}
+
+	&__tags, &__spinner, &__content{
+	  background-color: darken($containerBG, 2%);
+	  color:$text;
+	}
+
+	&__option--highlight, &__option--highlight:after{
+	  background: $headerBG;
+	}
+
+	&__option--selected{
+	  background: mix($headerBG, $accent);
+	  color:$text;
+	}
+  }
+}
