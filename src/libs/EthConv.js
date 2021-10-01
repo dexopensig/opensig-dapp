@@ -58,7 +58,7 @@ const ethConv = {
 
 		let $finalObj = {};
 		for (let $i in $obj) {
-			if(typeof $obj[$i] == "object" && $obj[$i].constructor.name == "BigNumber"){
+			if(typeof $obj[$i] == "object" && $obj[$i]._isBigNumber){
 				$finalObj[$i] = $obj[$i].toString();
 			}else if (typeof $obj[$i] == "object") {
 				let $keys = Object.keys($obj[$i]);
