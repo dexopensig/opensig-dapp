@@ -44,7 +44,7 @@
 								<div v-tooltip="{
 									html:true,
 									content: `Submitted ${$dayjs(item.submissionTime * 1000).format('YYYY-MM-DD HH:mm')}`
-										+ (item.executedAt>0?`<br />Executed ${$dayjs(item.executionTime * 1000).format('YYYY-MM-DD HH:mm')}`:'')
+										+ (item.executionTime>0?`<br />Executed ${$dayjs(item.executionTime * 1000).format('YYYY-MM-DD HH:mm')}`:'')
 								}">
 									<div class="transaction-status-date" v-if="item.executed"> {{ $dayjs(item.executionTime*1000).fromNow(true) }} ago </div>
 									<div class="transaction-status-date" v-else> {{ $dayjs(item.submissionTime*1000).fromNow(true) }} ago </div>

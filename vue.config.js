@@ -11,20 +11,7 @@ module.exports = {
 	configureWebpack: config => {
 		config.optimization = {
 			minimize: (process.env.NODE_ENV=="production"),
-			minimizer: [new UglifyJsPlugin({
-				uglifyOptions:{
-					mangle: {
-						properties: {
-							regex: /^txt[A-Z]+/,
-							reserved: ["$", "_"]
-						}
-					},
-					compress: true,
-					output: {
-						comments: false,
-					}
-				},
-			})]
+			minimizer: []
 		}
 	}
 }
