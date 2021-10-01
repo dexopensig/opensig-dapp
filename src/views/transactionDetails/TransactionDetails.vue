@@ -65,7 +65,7 @@
 										<td>Confirmations</td>
 										<td>
 											<div class="transaction-validators-container">
-												<span class="transaction-validators-counter">{{transaction.signers.length}}/{{transaction.requiredWhenExecuted>0?transaction.requiredWhenExecuted:state.currentRequiredConfirmations}}</span>
+												<span class="transaction-validators-counter">{{transaction.signers.length}}/{{transaction.signersWhenExecuted>0?transaction.signersWhenExecuted:state.currentRequiredConfirmations}}</span>
 												<div class="transaction-validators">
 													<identicon-address
 														:key="c"
