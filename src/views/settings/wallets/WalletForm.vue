@@ -14,18 +14,18 @@
 		</div>
 
 		<div class="form-group">
-			<label >ABI</label>
-			<input type="text" class="form-control" placeholder="Enter Contract ABI" v-model="txtAbi">
-		</div>
-
-		<div class="form-group">
-			<label >Reference Abi</label>
-			<input type="text" class="form-control" placeholder="Contract Address" v-model="txtReferenceContract">
+			<label >Reference Contract</label>
+			<input type="text" class="form-control" placeholder="Contract Address or 0xAbstract_..." v-model="txtReferenceContract">
 		</div>
 
 		<div class="form-group">
 			<label >Chain Explorer</label>
 			<input type="text" class="form-control" placeholder="Enter chain explorer" v-model="txtExplorer">
+		</div>
+
+		<div class="form-group">
+			<label >Native currency symbol</label>
+			<input type="text" class="form-control" placeholder="Enter symbol" v-model="txtSymbol">
 		</div>
 
 		<div class="row mt-4">
@@ -47,7 +47,6 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
 </template>
 
@@ -63,9 +62,9 @@ export default {
 		},
 		passedName: { type:String, default: "" },
 		passedAddress: { type:String, default: "" },
-		passedAbi: { type:String, default: "" },
 		passedExplorer: { type:String, default: "" },
 		passedReferenceContract: { type:String, default: "" },
+		passedSymbol: { type:String, default: "" },
 		editMode: {type:Boolean, default: false},
 	},
 	setup(props){
@@ -75,18 +74,18 @@ export default {
 		return {
 			txtName: "",
 			txtAddress: "",
-			txtAbi: "",
 			txtExplorer: "",
 			txtReferenceContract: "",
+			txtSymbol : "",
 			error: null
 		}
 	},
 	created() {
 		this.txtName = this.passedName || "";
 		this.txtAddress = this.passedAddress || "";
-		this.txtAbi = this.passedAbi || "";
 		this.txtExplorer = this.passedExplorer || "";
 		this.txtReferenceContract = this.passedReferenceContract || "";
+		this.txtSymbol = this.passedSymbol || "";
 	},
 
 	methods: {
@@ -104,9 +103,9 @@ export default {
 			const $wallet = {
 				name: this.txtName,
 				address: this.txtAddress,
-				abi: this.txtAbi,
 				explorer: this.txtExplorer,
-				referenceContract: this.txtReferenceContract
+				referenceContract: this.txtReferenceContract,
+				symbol: this.txtSymbol,
 			};
 
 			if($wallet.name.trim().length == 0){

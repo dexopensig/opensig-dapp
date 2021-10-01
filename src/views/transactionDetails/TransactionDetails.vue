@@ -65,7 +65,11 @@
 										<td>Confirmations</td>
 										<td>
 											<div class="transaction-validators-container">
-												<span class="transaction-validators-counter">{{transaction.signers.length}}/{{transaction.signersWhenExecuted>0?transaction.signersWhenExecuted:state.currentRequiredConfirmations}}</span>
+												<span class="transaction-validators-counter">
+													{{ transaction.signers.length}}
+													/
+													{{transaction.signersWhenExecuted && transaction.signersWhenExecuted.length>0?transaction.signersWhenExecuted.length:(state.currentRequiredConfirmations) }}
+												</span>
 												<div class="transaction-validators">
 													<identicon-address
 														:key="c"
@@ -159,9 +163,6 @@
 				</div>
 			</div>
 			<div class="p-3">
-				<div v-if="error" class="alert alert-danger">
-					{{ error }}
-				</div>
 				<div v-if="pendingTx" class="alert alert-info text-center">
 					<font-awesome-icon icon="spinner" spin /> Pending transaction
 				</div>
@@ -199,6 +200,7 @@ import HumanAddress from "@/components/HumanAddress";
 import LS from "@/libs/LS";
 import AbiStuff from "@/libs/AbiStuff";
 const BigNumber = require("bignumber.js");
+import {REVERT_CODES} from "@/constants/constants"
 
 export default {
 	name: "TransactionDetails",
@@ -232,7 +234,6 @@ export default {
 	setup(){
 		return {state: useState()}
 	},
-
 	created(){
 		this.transactionId = this.$route.params.transactionId;
 		this.walletAddress = this.$route.params.walletAddress;
@@ -307,10 +308,11 @@ export default {
 				destination: $tx.destination || null,
 				data: $tx.data || null,
 				value: $tx.value || null,
-				signersWhenExecuted: $tx.signersWhenExecuted || null,
+				signersWhenExecuted: $tx.signersWhenExecuted || [],
 				confirmationsCount: 0,
 				confirmationsRequired: 0,
 			};
+
 			$txObj.signers = $txObj.signersWhenExecuted;
 
 			const $currentRequiredConf = await this.$bridge.build(this.state.MSWInstance, 'getCurrentRequiredSignatures').callAndTranslate();
@@ -385,7 +387,12 @@ export default {
 						this.fetchData();
 
 						if(rcpt.events && rcpt.events.ExecutionFailure){
-							this.error = rcpt.events.ExecutionFailure.returnValues.revertMsg;
+							if(this.$EthConv.addrEqual(this.transaction.destination, this.state.selectedMSW.address)){
+								let $key = Object.keys(REVERT_CODES).find(key => REVERT_CODES[key] == rcpt.events.ExecutionFailure.returnValues.revertMsg);
+								this.error = $key || rcpt.events.ExecutionFailure.returnValues.revertMsg;
+							}else{
+								this.error = rcpt.events.ExecutionFailure.returnValues.revertMsg;
+							}
 						}
 
 					}

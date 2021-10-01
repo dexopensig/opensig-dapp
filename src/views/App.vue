@@ -7,18 +7,7 @@ import VueMetamask from '@/components/VueMetamask.vue';
 import Web3 from 'web3';
 import LS from '@/libs/LS';
 
-const REVERT_CODES = {
-	"ONLY_WALLET": "E00",
-	"OWNER_ALREADY_EXISTS": "E01",
-	"NO_OWNER": "E02",
-	"NO_TX": "E03",
-	"NOT_CONFIRMED": "E04",
-	"ALREADY_CONFIRMED": "E05",
-	"ALREADY_EXEC": "E06",
-	"IS_NULL": "E07",
-	"REQ_INVALID": "E08",
-	"NOT_FULLY_CONFIRMED": "E10",
-};
+import {REVERT_CODES} from "@/constants/constants"
 
 export default {
 	name: 'App',
@@ -290,7 +279,6 @@ export default {
 		},
 
 		tx_rpcSuccessHandler(rcpt, name){
-
 			if(!rcpt){
 
 			}else{
@@ -302,22 +290,12 @@ export default {
 					closeOnClick:false
 				});
 			}
-
-
 		},
 
 		tick: async function(){
 
 			let $block = await this.state.web3.eth.getBlockNumber().catch(err => {
-				//console.error("ERR getBlockNumber " + err);
-				if((err+"").indexOf("DOCTYPE") != -1){
-					this.$notify({
-						title: 'Contract error',
-						text: 'Test network down',
-						type:"error",
-						duration: 5000
-					});
-				}
+				console.error("ERR getBlockNumber " + err);
 			});
 
 			if($block > this.state.currentBlock){
@@ -325,7 +303,9 @@ export default {
 			}
 			this.state.currentBlock = $block;
 
-			this.currentNonce = await this.state.web3.eth.getTransactionCount(this.metamaskAddress);
+			this.currentNonce = await this.state.web3.eth.getTransactionCount(this.metamaskAddress).catch(err => {
+				console.error("Err getTxCount " + err);
+			});
 
 			if(this.state.MSWInstance){
 				this.state.currentRequiredConfirmations = await this.$bridge.build(this.state.MSWInstance, 'getCurrentRequiredSignatures').callAndTranslate().catch(err => {

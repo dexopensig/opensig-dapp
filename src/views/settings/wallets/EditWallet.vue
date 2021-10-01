@@ -3,9 +3,9 @@
 		<wallet-form
 			:passedName="wallet.name"
 			:passedAddress="wallet.address"
-			:passedAbi="wallet.abi"
 			:passedExplorer="wallet.explorer"
 			:passedReferenceContract="wallet.referenceContract"
+			:passedSymbol="wallet.symbol"
 			:editMode="true"
 			@formUpdated="formUpdated"
 		/>

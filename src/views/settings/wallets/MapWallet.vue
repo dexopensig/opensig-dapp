@@ -50,7 +50,6 @@
 										track-by="value"
 										:taggable="true"
 										tag-placeholder="Set manual argument"
-										@select="onArgSelected(abiMethodArg.arg.name, $event)"
 										@Tag="onAddTag(bridgeMethodData.passedArgs, bridgeMethodName, abiMethodSignature, $event)"
 									>
 										<template v-slot:singleLabel="{ option }">

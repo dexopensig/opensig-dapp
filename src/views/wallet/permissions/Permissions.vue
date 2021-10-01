@@ -5,10 +5,13 @@
 			<div class="mb-3">
 				<div class="row">
 					<div class="col" style="line-height:2.4em" >
-						{{owners.length}} Owners
+						{{owners.length}} Owners / {{ requiredSignatures }} Required signatures
 					</div>
 					<div class="col-auto">
-						<button class="btn btn-primary" @click="showAddOwnerModal=true" v-if="!pendingTxAddOwner">Add owner</button>
+						<div v-if="!pendingTx">
+							<button class="btn btn-primary me-2" @click="showAddOwnerModal=true" >Add owner</button>
+							<button class="btn btn-primary" @click="showChangeRequiredSignatures=true" >Change required signatures</button>
+						</div>
 						<div v-else>
 							<font-awesome-icon icon="spinner" spin /> Pending transaction
 						</div>
@@ -66,6 +69,28 @@
 				</div>
 			</div>
 		</vue-final-modal>
+		<vue-final-modal
+			v-model="showChangeRequiredSignatures"
+			classes="modal-container"
+			content-class="modal-content"
+		>
+			<div class="card">
+				<div class="card-header">
+					<div class="card-title mt-2 ms-3">Required signatures</div>
+				</div>
+				<div class="card-body">
+					<label class="form-label">Number of required signatures</label>
+					<input v-model="txtChangeRequiredSignatures" class="form-control" />
+				</div>
+				<div class="card-footer text-end">
+					<button class="btn btn-primary"
+						@click="changeRequiredSignatures()"
+					>
+						Change
+					</button>
+				</div>
+			</div>
+		</vue-final-modal>
 	</div>
 </template>
 <style scoped>
@@ -102,10 +127,13 @@ export default {
 		return {
 			loading: false,
 			error: null,
-			pendingTxAddOwner: false,
+			requiredSignatures : 0,
+			pendingTx: false,
 			showAddOwnerModal: false,
+			showChangeRequiredSignatures: false,
 			pendingTxRevoke: false,
 			txtNewOwner: "",
+			txtChangeRequiredSignatures: "",
 			owners: [],
 		}
 	},
@@ -114,20 +142,13 @@ export default {
 			type: Boolean
 		},
 	},
-	setup(props){
-
-		let { metaEnabled, prop1 } = toRefs(props);
-
-		watch(metaEnabled, (newVal, oldVal) => {
-
-		});
-
+	setup(){
 		return {state: useState()}
 	},
-
 	mounted(){
 		if(this.state.metaEnabled){
 			this.getOwners();
+			this.getRequiredSignatures();
 		}
 	},
 
@@ -135,6 +156,59 @@ export default {
 
 		getOwners: async function() {
 			this.owners = await this.$bridge.build(this.state.MSWInstance, 'getSignersAddresses').callAndTranslate();
+		},
+
+		getRequiredSignatures : async function(){
+			this.requiredSignatures = await this.$bridge.build(this.state.MSWInstance, 'getCurrentRequiredSignatures').callAndTranslate();
+			state.selectedMSW.currentRequiredConfirmations = this.requiredSignatures;
+		},
+
+		changeRequiredSignatures: async function() {
+			this.error = null;
+			this.showChangeRequiredSignatures = false;
+
+			let required = this.txtChangeRequiredSignatures*1;
+
+			if(isNaN(required)){
+				this.error = "Invalid Number";
+				return;
+			}
+
+			let $txData;
+			try {
+				$txData = this.$bridge.build(this.state.MSWInstance, 'setRequiredSignatures', {number: required}).encodeABI();
+			}catch(e) {
+				this.error = e;
+				return;
+			}
+
+			let $tx = this.$bridge.build(this.state.MSWInstance, 'submitTransaction', {destination: this.state.MSWInstanceWrite._address, value: 0, data: $txData});
+
+			let $estGas = await $tx.estimateGas( {
+				from:this.state.metamaskAddress,
+				gasLimit:9000000,
+			}).catch(err => {
+				if(err){
+					this.error = "Error while estimating gas " + err
+				}
+			});
+
+			this.pendingTx = true;
+
+			$tx.send({
+				from:this.state.metamaskAddress,
+				gasLimit:$estGas || 500000,
+			})
+				.catch(err => {
+					this.error = err;
+					this.pendingTx = false;
+				})
+				.then(rcpt => {
+					this.pendingTx = false;
+					if(rcpt){
+						this.getRequiredSignatures();
+					}
+				});
 		},
 
 		addOwner: async function() {
@@ -166,7 +240,7 @@ export default {
 				}
 			});
 
-			this.pendingTxAddOwner = true;
+			this.pendingTx = true;
 
 			$tx.send({
 				from:this.state.metamaskAddress,
@@ -174,10 +248,10 @@ export default {
 			})
 				.catch(err => {
 					this.error = err;
-					this.pendingTxAddOwner = false;
+					this.pendingTx = false;
 				})
 				.then(rcpt => {
-					this.pendingTxAddOwner = false;
+					this.pendingTx = false;
 					if(rcpt){
 						this.getOwners();
 					}
@@ -217,9 +291,11 @@ export default {
 					this.pendingTxRevoke = false;
 				})
 				.then(rcpt => {
+					console.log(rcpt);
 					this.pendingTxRevoke = false;
 					if(rcpt){
 						this.getOwners();
+						this.getRequiredSignatures();
 					}
 				});
 		}
@@ -227,7 +303,3 @@ export default {
 	}
 }
 </script>
-
-<style scoped>
-
-</style>

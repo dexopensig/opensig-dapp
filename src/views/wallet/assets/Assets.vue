@@ -20,7 +20,7 @@
 							<identicon-address address="native" />
 						</td>
 						<td>
-							[NATIVE]
+							{{ state.selectedMSW.symbol }}
 						</td>
 						<td>
 							{{ humanBalance(nativeBalance, 18) }}

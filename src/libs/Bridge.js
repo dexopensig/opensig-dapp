@@ -17,6 +17,7 @@ const Bridge = {
 
 		addSigner: {passedArgs:['address']},
 		removeSigner: {passedArgs:['address']},
+		setRequiredSignatures: {passedArgs:['number']},
 
 		submitTransaction: {passedArgs:['destination', 'value', 'data']},
 	},
@@ -52,22 +53,24 @@ const Bridge = {
 	build(instance, index, args){
 		if(this.maps[index]){
 			const $mappedArgs = [];
-			for(let $a of this.maps[index].abiArgs){
-				let $refVal = $a;
-				let $type = 'placeholder';
-				if(typeof $a == 'object'){
-					$refVal = $a.value;
-					$type = $a.type;
-				}
-
-				if($type == 'placeholder'){
-					if(typeof args[$refVal] !== 'undefined' && args[$refVal] !== null){
-						$mappedArgs.push(args[$refVal]);
-					}else{
-						console.error("Bridge: mapped arg not found : " + $refVal);
+			if(this.maps[index].abiArgs){
+				for(let $a of this.maps[index].abiArgs){
+					let $refVal = $a;
+					let $type = 'placeholder';
+					if(typeof $a == 'object'){
+						$refVal = $a.value;
+						$type = $a.type;
 					}
-				}else{
-					$mappedArgs.push($a);
+
+					if($type == 'placeholder'){
+						if(typeof args[$refVal] !== 'undefined' && args[$refVal] !== null){
+							$mappedArgs.push(args[$refVal]);
+						}else{
+							console.error("Bridge: mapped arg not found : " + $refVal);
+						}
+					}else{
+						$mappedArgs.push($a);
+					}
 				}
 			}
 
