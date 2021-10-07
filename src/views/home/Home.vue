@@ -3,7 +3,7 @@
 		<h1>OpenSig</h1>
 		<p class="jumbo">
 			OpenSig is an EVM compatible Multi Signature Wallet interface<br />
-			The main features are base on <a href="https://github.com/gnosis/MultiSigWallet/blob/master/contracts/MultiSigWallet.sol" target="_blank">Consensys MultiSigWallet</a>
+			The main features are based on <a href="https://github.com/gnosis/MultiSigWallet/blob/master/contracts/MultiSigWallet.sol" target="_blank">Consensys MultiSigWallet</a>
 		</p>
 
 		<div>

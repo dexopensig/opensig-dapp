@@ -250,6 +250,9 @@ export default {
 			}
 
 			LS.saveWalletMap(this.address, $mapData);
+			if(this.$EthConv.addrEqual(this.address, this.state.selectedMSW.address)){
+				this.$bridge.setup(this.address);
+			}
 
 		}
 	}
