@@ -40,6 +40,19 @@
 					</div>
 
 					<div class="alert alert-dark">
+						<h5>{{ report.contacts.imported.length }} address book contacts to import</h5>
+						<div :key="index"
+							v-for="(item, index) in report.contacts.imported" >
+							<span class="old-or-new">
+								<font-awesome-icon icon="exclamation-circle" class="text-warning" v-if="item.existing" />
+							</span>
+							<span>
+								{{ item.item.name }}
+							</span>
+						</div>
+					</div>
+
+					<div class="alert alert-dark">
 						<h5>
 							{{ report.tokens.imported.length }} tokens to import <span v-if="report.tokens.existing.length">( {{ report.tokens.existing.length }} existing )</span>
 						</h5>
@@ -206,6 +219,7 @@ export default {
 
 			const $report = {
 				wallets: {existing:[], new: [], imported: []},
+				contacts: {existing:[], new: [], imported: []},
 				contracts: {
 					existing:[], new: [], imported: {}
 				},
@@ -215,14 +229,23 @@ export default {
 			};
 
 			$report.wallets.imported = (this.jsonConfig.settings.wallets || []).map(a => { return {existing: false, item:a}});
+			$report.contacts.imported = (this.jsonConfig.settings.contacts || []).map(a => { return {existing: false, item:a}});
 			$report.tokens.imported = (this.jsonConfig.settings.tokens || []).map(a => { return {existing: false, item:a}});
-			$report.contracts.imported = (Object.values(this.jsonConfig.settings.contracts) || []).map(a => { return {existing: false, item:a}});
+			$report.contracts.imported = (this.jsonConfig.settings.contracts?Object.values(this.jsonConfig.settings.contracts):[] || []).map(a => { return {existing: false, item:a}});
 
 			let $storageWallets = LS.getWallets();
 			$report.wallets.existing = $storageWallets.filter(a => EthConv.addrInArray(a.address, Object.values($report.wallets.imported.map(a => a.item.address)))) || [];
 			$report.wallets.new = $storageWallets.filter(a => !EthConv.addrInArray(a.address, Object.values($report.wallets.imported.map(a => a.item.address)))) || [];
 			$report.wallets.imported.map(a => {
 				a.existing = EthConv.addrInArray(a.item.address, $storageWallets.map(a => a.address));
+				return a;
+			});
+
+			let $storageContacts = LS.getContacts();
+			$report.contacts.existing = $storageContacts.filter(a => EthConv.addrInArray(a.address, Object.values($report.contacts.imported.map(a => a.item.address)))) || [];
+			$report.contacts.new = $storageContacts.filter(a => !EthConv.addrInArray(a.address, Object.values($report.contacts.imported.map(a => a.item.address)))) || [];
+			$report.contacts.imported.map(a => {
+				a.existing = EthConv.addrInArray(a.item.address, $storageContacts.map(a => a.address));
 				return a;
 			});
 
@@ -279,6 +302,7 @@ export default {
 			}
 
 			console.log($report.wallets.existing.length + " existing wallets");
+			console.log($report.contacts.existing.length + " existing contacts");
 			console.log($report.contracts.existing.length + " existing contracts");
 			console.log($report.tokens.existing.length + " existing tokens");
 
@@ -286,6 +310,7 @@ export default {
 			console.log($totalExistingSummaries + " existing summaries");
 
 			console.log($report.wallets.new.length + " new wallets");
+			console.log($report.contacts.new.length + " new contacts");
 			console.log($report.contracts.new.length + " new contracts");
 			console.log($report.tokens.new.length + " new tokens");
 
@@ -316,6 +341,8 @@ export default {
 					$wallets.push($w);
 				}else if(this.importStyle == 1){
 					$wallets[$index] = $w;
+				}else{
+					continue;
 				}
 
 				LS.saveWallets($wallets);
@@ -324,6 +351,29 @@ export default {
 				}
 
 				this.importedResult.wallets++;
+			}
+
+			//WALLETS
+			for(let item of this.report.contacts.imported){
+				let $contacts = LS.getContacts();
+				let $index = $contacts.findIndex(a => EthConv.addrEqual(a.address, item.item.address));
+
+				const $c = {
+					name: item.item.name || null,
+					address: item.item.address || null,
+				};
+
+				if($index == -1) {
+					$contacts.push($c);
+				}else if(this.importStyle == 1){
+					$contacts[$index] = $c;
+				}else{
+					continue;
+				}
+
+				LS.saveContacts($contacts);
+
+				this.importedResult.contacts++;
 			}
 
 			//TOKENS
@@ -343,7 +393,10 @@ export default {
 					$tokens.push($t);
 				}else if(this.importStyle == 1){
 					$tokens[$index] = $t;
+				}else{
+					continue;
 				}
+
 				LS.saveTokens($tokens);
 				this.importedResult.tokens++;
 			}
@@ -368,6 +421,8 @@ export default {
 					$contracts[$index] = $c;
 					LS.saveSummaries($c.address, item.item.summaries);
 					LS.saveInputMaps($c.address, item.item.input_maps);
+				}else{
+					continue;
 				}
 
 				LS.saveContracts($contracts);

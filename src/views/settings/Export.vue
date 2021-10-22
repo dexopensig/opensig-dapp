@@ -120,6 +120,10 @@ export default {
 				$json.settings['tokens'] = LS.getTokens();
 			}
 
+			if(this.checks.addressBook.enabled){
+				$json.settings['contacts'] = LS.getContacts();
+			}
+
 			const data = JSON.stringify($json, "\n", "\t");
 			const blob = new Blob([data], {type: 'text/plain'});
 			const e = document.createEvent('MouseEvents'),
