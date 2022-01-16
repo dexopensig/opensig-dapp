@@ -160,7 +160,7 @@ export default {
 
 		getRequiredSignatures : async function(){
 			this.requiredSignatures = await this.$bridge.build(this.state.MSWInstance, 'getCurrentRequiredSignatures').callAndTranslate();
-			state.selectedMSW.currentRequiredConfirmations = this.requiredSignatures;
+			this.state.selectedMSW.currentRequiredConfirmations = this.requiredSignatures;
 		},
 
 		changeRequiredSignatures: async function() {
@@ -269,6 +269,10 @@ export default {
 				return;
 			}
 
+			if (this.error) {
+				return;
+			}
+
 			let $tx = this.$bridge.build(this.state.MSWInstance, 'submitTransaction', {destination: this.state.MSWInstanceWrite._address, value: 0, data: $txData});
 
 			let $estGas = await $tx.estimateGas( {
@@ -279,6 +283,10 @@ export default {
 					this.error = "Error while estimating gas " + err
 				}
 			});
+
+			if (this.error) {
+				return;
+			}
 
 			this.pendingTxRevoke = true;
 

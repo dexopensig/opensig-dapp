@@ -90,9 +90,40 @@ const ethConv = {
 		return $finalObj;
 	},
 
-	truncateAddr: function (addr) {
+	truncateAddr: function (addr, privateSeed) {
 		addr = addr + "";
+		if(privateSeed>0){
+			let addrArr = addr.substring(2).split('');
+			addrArr = this.shuffle(addrArr, privateSeed);
+			let shuffld = '0x' + addrArr.join('');
+
+			return shuffld.substring(0, 6) + "[...]" + shuffld.substr(-4)
+		}
 		return addr.substring(0, 6) + "[...]" + addr.substr(-4)
+	},
+
+	shuffle(array, seed) {                // <-- ADDED ARGUMENT
+		var m = array.length, t, i;
+
+		// While there remain elements to shuffle…
+		while (m) {
+
+			// Pick a remaining element…
+			i = Math.floor(this.random(seed) * m--);        // <-- MODIFIED LINE
+
+			// And swap it with the current element.
+			t = array[m];
+			array[m] = array[i];
+			array[i] = t;
+			++seed                                     // <-- ADDED LINE
+		}
+
+		return array;
+	},
+
+	random(seed) {
+		var x = Math.sin(seed++) * 10000;
+		return x - Math.floor(x);
 	},
 };
 

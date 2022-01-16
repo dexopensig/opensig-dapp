@@ -30,6 +30,10 @@ import SettingsAddresses from "../views/settings/addresses/Addresses"
 import SettingsAddressesEdit from "../views/settings/addresses/EditAddress"
 import SettingsAddressesAdd from "../views/settings/addresses/AddAddress"
 
+import SettingsChains from "../views/settings/chains/Chains"
+import SettingsChainsEdit from "../views/settings/chains/EditChain"
+import SettingsChainsAdd from "../views/settings/chains/AddChain"
+
 
 import SettingsExport from "../views/settings/Export"
 import SettingsImport from "../views/settings/Import"
@@ -155,6 +159,23 @@ const routes = [
 						path: ":address",
 						name: "SettingsAddressesEdit",
 						component: SettingsAddressesEdit,
+					},
+				]
+			},
+			{
+				path: "chains",
+				name: "SettingsChains",
+				component: SettingsChains,
+				children: [
+					{
+						path: "add",
+						name: "SettingsChainsAdd",
+						component: SettingsChainsAdd,
+					},
+					{
+						path: ":id",
+						name: "SettingsChainsEdit",
+						component: SettingsChainsEdit,
 					},
 				]
 			},

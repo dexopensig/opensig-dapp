@@ -1,20 +1,24 @@
 <template>
 	<span class="truncated_address">
 		<a target="_blank" :href="getLink()" >
-			{{ displayName || (truncate?$EthConv.truncateAddr(address):address) }}
+			{{ displayName || (truncate?$EthConv.truncateAddr(address, privateSeed):address) }}
 		</a>
 	</span>
 </template>
 
 <script>
 
-import ChainConfig from "@/libs/ChainConfig"
 const LS = require('@/libs/LS');
+import { useState } from '@/store';
 
 export default {
 	props: {
 		address: {default: ""},
 		truncate: {default: true},
+		privateSeed: {default: 0},
+	},
+	setup() {
+		return {state: useState()}
 	},
 	created() {
 		//this.address = this.address + "";
@@ -38,7 +42,7 @@ export default {
 	},
 	methods: {
 		getLink: function () {
-			return ChainConfig.explorer + "/address/" + this.address;
+			return this.state.currentChain.explorer + "/address/" + this.address;
 		},
 	}
 }

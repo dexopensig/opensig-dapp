@@ -77,6 +77,7 @@
 									:address="item.destination"
 									:value="item.value"
 									:hexData="item.data"
+									:scrambleValues="scrambleValues"
 								/>
 							</td>
 							<td>
@@ -117,8 +118,9 @@ export default {
 	},
 	props : {
 		metaEnabled: {
-			type: Boolean
+			type: Boolean,
 		},
+		scrambleValues: {default: 1.2}
 	},
 	setup(props){
 
@@ -203,7 +205,7 @@ export default {
 		},
 
 		getNativeValue(val){
-			return new BigNumber(val).div(10**18).toFixed(4);
+			return new BigNumber(val).times(this.scrambleValues).div(10**18).toFixed(4);
 		}
 
 	}

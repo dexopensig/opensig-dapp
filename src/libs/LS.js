@@ -20,8 +20,11 @@ const LS = {
 	getContact (address){ return this.getItem(address, 'address', 'contacts') },
 	getContactIndex (address){ return this.getItemIndex(address, 'address', 'contacts') },
 
-
-
+	saveChains(items){ this.saveItems(items, 'chains') },
+	deleteChain(id){ this.deleteItem(id, 'id', 'chains') },
+	getChains () { return this.getItems('chains') },
+	getChain (id){ return this.getItem(id, 'id', 'chains') },
+	getChainIndex (id){ return this.getItemIndex(id, 'id', 'chains') },
 
 	saveWallets(items){ this.saveItems(items, 'wallets') },
 	deleteWallet(address){ this.deleteItem(address, 'address', 'wallets'); },
@@ -134,6 +137,13 @@ const LS = {
 				if($erc){
 					return {abi: $erc.abi, refAddress: $erc.address, targetAddress: address, name: $token.name};
 				}
+			}
+		}
+
+		if(!$types.length || $types.indexOf('contacts') !== -1){
+			let $contact = this.getContact(address);
+			if($contact){
+				return {abi: null, refAddress: null, targetAddress: address, name: $contact.name}
 			}
 		}
 

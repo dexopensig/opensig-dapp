@@ -8,6 +8,7 @@ module.exports = {
 	rules: {
 		// override/add rules settings here, such as:
 		// 'vue/no-unused-vars': 'error'
+		"indent": [2, "tab"],
 		"no-tabs": 0,
 		"vue/html-indent": ["error", "tab"],  // enforce tabs in template
 		"indent": ["error", "tab"]            // enforce tabs in script and js files

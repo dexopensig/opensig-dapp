@@ -57,6 +57,10 @@ export default {
 					name: "Address book",
 					enabled: true,
 				},
+				chains: {
+					name: "Chains",
+					enabled: true,
+				},
 			},
 			error : null
 		}
@@ -122,6 +126,10 @@ export default {
 
 			if(this.checks.addressBook.enabled){
 				$json.settings['contacts'] = LS.getContacts();
+			}
+
+			if(this.checks.chains.enabled){
+				$json.settings['chains'] = LS.getChains();
 			}
 
 			const data = JSON.stringify($json, "\n", "\t");

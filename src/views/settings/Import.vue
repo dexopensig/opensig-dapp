@@ -3,22 +3,48 @@
 		<h5>
 			Import preferences
 		</h5>
-		<div v-if="success" class="alert alert-success">
-			<div v-if="importedResult.wallets>0">{{ importedResult.wallets }} wallets imported</div>
-			<div v-if="importedResult.contacts>0">{{ importedResult.contacts }} contacts imported to address book</div>
-			<div v-if="importedResult.tokens>0">{{ importedResult.tokens }} tokens imported</div>
-			<div v-if="importedResult.contracts>0">{{ importedResult.contracts }} contracts imported</div>
+		<div
+			v-if="success"
+			class="alert alert-success"
+		>
+			<div v-if="importedResult.wallets>0">
+				{{ importedResult.wallets }} wallets imported
+			</div>
+			<div v-if="importedResult.contacts>0">
+				{{ importedResult.contacts }} contacts imported to address book
+			</div>
+			<div v-if="importedResult.tokens>0">
+				{{ importedResult.tokens }} tokens imported
+			</div>
+			<div v-if="importedResult.contracts>0">
+				{{ importedResult.contracts }} contracts imported
+			</div>
+			<div v-if="importedResult.chains>0">
+				{{ importedResult.chains }} chains imported
+			</div>
 
-			<div v-if="importedResult.total>0">Import successful</div>
-			<div v-else>Nothing to be imported</div>
+			<div v-if="importedResult.total>0">
+				Import successful
+			</div>
+			<div v-else>
+				Nothing to be imported
+			</div>
 		</div>
-		<div v-if="error" class="alert alert-warning">{{ error }}</div>
-		<div v-if="!report" :class="['alert-dark', 'drop-zone', !($refs.upload && $refs.upload.dropActive)||'drop-active']">
+		<div
+			v-if="error"
+			class="alert alert-warning"
+		>
+			{{ error }}
+		</div>
+		<div
+			v-if="!report"
+			:class="['alert-dark', 'drop-zone', !($refs.upload && $refs.upload.dropActive)||'drop-active']"
+		>
 			<vue-upload-component
 				ref="upload"
 				v-model="files"
-				@input-filter="inputFilter"
 				:drop="true"
+				@input-filter="inputFilter"
 			>
 				Click or Drop your file here
 			</vue-upload-component>
@@ -28,10 +54,16 @@
 				<div class="col-8">
 					<div class="alert alert-dark">
 						<h5>{{ report.wallets.imported.length }} wallets to import</h5>
-						<div :key="index"
-							v-for="(item, index) in report.wallets.imported" >
+						<div
+							v-for="(item, index) in report.wallets.imported"
+							:key="index"
+						>
 							<span class="old-or-new">
-								<font-awesome-icon icon="exclamation-circle" class="text-warning" v-if="item.existing" />
+								<font-awesome-icon
+									v-if="item.existing"
+									icon="exclamation-circle"
+									class="text-warning"
+								/>
 							</span>
 							<span>
 								{{ item.item.name }}
@@ -41,10 +73,35 @@
 
 					<div class="alert alert-dark">
 						<h5>{{ report.contacts.imported.length }} address book contacts to import</h5>
-						<div :key="index"
-							v-for="(item, index) in report.contacts.imported" >
+						<div
+							v-for="(item, index) in report.contacts.imported"
+							:key="index"
+						>
 							<span class="old-or-new">
-								<font-awesome-icon icon="exclamation-circle" class="text-warning" v-if="item.existing" />
+								<font-awesome-icon
+									v-if="item.existing"
+									icon="exclamation-circle"
+									class="text-warning"
+								/>
+							</span>
+							<span>
+								{{ item.item.name }}
+							</span>
+						</div>
+					</div>
+
+					<div class="alert alert-dark">
+						<h5>{{ report.chains.imported.length }} chains to import</h5>
+						<div
+							v-for="(item, index) in report.chains.imported"
+							:key="index"
+						>
+							<span class="old-or-new">
+								<font-awesome-icon
+									v-if="item.existing"
+									icon="exclamation-circle"
+									class="text-warning"
+								/>
 							</span>
 							<span>
 								{{ item.item.name }}
@@ -57,10 +114,18 @@
 							{{ report.tokens.imported.length }} tokens to import <span v-if="report.tokens.existing.length">( {{ report.tokens.existing.length }} existing )</span>
 						</h5>
 
-						<div :key="index"
-							v-for="(item, index) in report.tokens.imported">
-							<span class="old-or-new" v-if="item.existing">
-								<font-awesome-icon icon="exclamation-circle" class="text-warning"  />
+						<div
+							v-for="(item, index) in report.tokens.imported"
+							:key="index"
+						>
+							<span
+								v-if="item.existing"
+								class="old-or-new"
+							>
+								<font-awesome-icon
+									icon="exclamation-circle"
+									class="text-warning"
+								/>
 							</span>
 							<span>
 								{{ item.item.name }}
@@ -74,10 +139,18 @@
 								{{ report.contracts.imported.length }} tokens to import <span v-if="report.contracts.existing.length">( {{ report.contracts.existing.length }} existing )</span>
 							</h5>
 
-							<div :key="index"
-								v-for="(item, index) in report.contracts.imported">
-								<span class="old-or-new" v-if="item.existing">
-									<font-awesome-icon icon="exclamation-circle" class="text-warning"  />
+							<div
+								v-for="(item, index) in report.contracts.imported"
+								:key="index"
+							>
+								<span
+									v-if="item.existing"
+									class="old-or-new"
+								>
+									<font-awesome-icon
+										icon="exclamation-circle"
+										class="text-warning"
+									/>
 								</span>
 								<span>
 									{{ item.item.contract.name }}
@@ -87,25 +160,49 @@
 					</div>
 				</div>
 				<div class="col-4">
-					<div class="form-check"
+					<div
+						v-for="(item, index) in checks"
 						:key="index"
-						v-for="(item, index) in checks">
-						<input class="form-check-input" type="checkbox" v-model="item.enabled" :id="index">
-						<label class="form-check-label" :for="index">
+						class="form-check"
+					>
+						<input
+							:id="index"
+							v-model="item.enabled"
+							class="form-check-input"
+							type="checkbox"
+						>
+						<label
+							class="form-check-label"
+							:for="index"
+						>
 							{{ item.name }}
 						</label>
 					</div>
 					<label>How to process existing entries?</label>
 					<select v-model="importStyle">
-						<option value="0">Skip</option>
-						<option value="1">Override</option>
+						<option value="0">
+							Skip
+						</option>
+						<option value="1">
+							Override
+						</option>
 					</select>
 					<div class="d-grid mt-3">
-						<button v-if="!pending" class="btn btn-primary" @click="importSettings()" >
+						<button
+							v-if="!pending"
+							class="btn btn-primary"
+							@click="importSettings()"
+						>
 							import
 						</button>
-						<div v-else class="text-center">
-							<font-awesome-icon icon="spinner" spin /> Importing...
+						<div
+							v-else
+							class="text-center"
+						>
+							<font-awesome-icon
+								icon="spinner"
+								spin
+							/> Importing...
 						</div>
 					</div>
 				</div>
@@ -130,13 +227,13 @@ const VueUploadComponent = require('vue-upload-component');
 
 export default {
 	name: "Export",
+	components:{
+		VueUploadComponent
+	},
 	props : {
 		metaEnabled: {
 			type: Boolean
 		},
-	},
-	components:{
-		VueUploadComponent
 	},
 	setup(){
 		return {state: useState()}
@@ -171,6 +268,10 @@ export default {
 				},
 				addressBook: {
 					name: "Address book",
+					enabled: true,
+				},
+				chains: {
+					name: "Chains",
 					enabled: true,
 				},
 			},
@@ -217,6 +318,7 @@ export default {
 
 		analyseConfig(){
 
+			debugger;
 			const $report = {
 				wallets: {existing:[], new: [], imported: []},
 				contacts: {existing:[], new: [], imported: []},
@@ -224,6 +326,7 @@ export default {
 					existing:[], new: [], imported: {}
 				},
 				tokens: {existing:[], new: [], imported: []},
+				chains: {existing:[], new: [], imported: []},
 				//summaries: {existing:[], new: 0, imported: {}},
 				//inputMaps: {existing:[], new: 0, imported: {}},
 			};
@@ -232,6 +335,7 @@ export default {
 			$report.contacts.imported = (this.jsonConfig.settings.contacts || []).map(a => { return {existing: false, item:a}});
 			$report.tokens.imported = (this.jsonConfig.settings.tokens || []).map(a => { return {existing: false, item:a}});
 			$report.contracts.imported = (this.jsonConfig.settings.contracts?Object.values(this.jsonConfig.settings.contracts):[] || []).map(a => { return {existing: false, item:a}});
+			$report.chains.imported = (this.jsonConfig.settings.chains?Object.values(this.jsonConfig.settings.chains):[] || []).map(a => { return {existing: false, item:a}});
 
 			let $storageWallets = LS.getWallets();
 			$report.wallets.existing = $storageWallets.filter(a => EthConv.addrInArray(a.address, Object.values($report.wallets.imported.map(a => a.item.address)))) || [];
@@ -246,6 +350,14 @@ export default {
 			$report.contacts.new = $storageContacts.filter(a => !EthConv.addrInArray(a.address, Object.values($report.contacts.imported.map(a => a.item.address)))) || [];
 			$report.contacts.imported.map(a => {
 				a.existing = EthConv.addrInArray(a.item.address, $storageContacts.map(a => a.address));
+				return a;
+			});
+
+			let $storageChains = LS.getChains();
+			$report.chains.existing = $storageChains.filter(a => Object.values($report.chains.imported.map(a => a.item.id)).indexOf(a.id) !== -1) || [];
+			$report.chains.new = $storageChains.filter(a => Object.values($report.chains.imported.map(a => a.item.id)).indexOf(a.id) === -1) || [];
+			$report.chains.imported.map(a => {
+				a.existing = $storageChains.map(a => a.id).indexOf(a.item.id) !== -1;
 				return a;
 			});
 
@@ -305,6 +417,7 @@ export default {
 			console.log($report.contacts.existing.length + " existing contacts");
 			console.log($report.contracts.existing.length + " existing contracts");
 			console.log($report.tokens.existing.length + " existing tokens");
+			console.log($report.chains.existing.length + " existing chains");
 
 			console.log($totalExistingIM + " total existing InputMaps");
 			console.log($totalExistingSummaries + " existing summaries");
@@ -313,6 +426,7 @@ export default {
 			console.log($report.contacts.new.length + " new contacts");
 			console.log($report.contracts.new.length + " new contracts");
 			console.log($report.tokens.new.length + " new tokens");
+			console.log($report.chains.new.length + " new chains");
 
 			this.report = $report;
 		},
@@ -324,6 +438,7 @@ export default {
 				tokens: 0,
 				contacts: 0,
 				contracts: 0,
+				chains: 0,
 				total: 0,
 			};
 
@@ -353,7 +468,7 @@ export default {
 				this.importedResult.wallets++;
 			}
 
-			//WALLETS
+			//CONTACTS
 			for(let item of this.report.contacts.imported){
 				let $contacts = LS.getContacts();
 				let $index = $contacts.findIndex(a => EthConv.addrEqual(a.address, item.item.address));
@@ -374,6 +489,31 @@ export default {
 				LS.saveContacts($contacts);
 
 				this.importedResult.contacts++;
+			}
+
+			//CHAINS
+			for(let item of this.report.chains.imported){
+				let $chains = LS.getChains();
+				let $index = $chains.findIndex(a => a.id == item.item.id);
+
+				const $c = {
+					name: item.item.name || null,
+					id: item.item.id || null,
+					nativeSymbol: item.item.nativeSymbol || null,
+					explorer: item.item.explorer || null,
+				};
+
+				if($index == -1) {
+					$chains.push($c);
+				}else if(this.importStyle == 1){
+					$chains[$index] = $c;
+				}else{
+					continue;
+				}
+
+				LS.saveChains($chains);
+
+				this.importedResult.chains++;
 			}
 
 			//TOKENS
@@ -434,6 +574,7 @@ export default {
 				+ this.importedResult.tokens
 				+ this.importedResult.contracts
 				+ this.importedResult.contacts;
+			+ this.importedResult.chains;
 
 			this.success = true;
 			this.report = null;

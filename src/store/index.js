@@ -7,6 +7,12 @@ export const createState = () => reactive({
 		address: null,
 		explorer: null,
 	},
+	currentChain: {
+		id: 0,
+		explorer: '',
+		symbol: '',
+		name: 'nochain'
+	},
 	metamaskAddress:null,
 
 	currentBlock:null,

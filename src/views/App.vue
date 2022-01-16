@@ -80,6 +80,15 @@ export default {
 				this.state.metamaskAddress = data.metaMaskAddress;
 				this.state.networkId = data.netID;
 
+				this.state.currentChain.id = data.netID;
+				const prefChain = LS.getChain(data.netID);
+				if (prefChain) {
+					this.state.currentChain.explorer = prefChain.explorer;
+					this.state.currentChain.id = prefChain.id;
+					this.state.currentChain.name = prefChain.name;
+					this.state.currentChain.symbol = prefChain.nativeSymbol;
+				}
+
 				this.metamaskAddress = this.state.metamaskAddress;
 				if(this.state.selectedMSW.address){
 					try{
@@ -152,6 +161,14 @@ export default {
 		},
 		enabled(){
 			return this.state.metaEnabled;
+		},
+		getNetworkName(id) {
+
+
+			const chain = LS.getChain(id);
+
+			if (chain) return chain.name;
+			return "unknown " + id;
 		},
 		saveProvider(){
 

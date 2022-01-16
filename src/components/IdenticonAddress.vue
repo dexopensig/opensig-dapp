@@ -27,7 +27,8 @@
 	}
 </style>
 <script>
-import ChainConfig from "@/libs/ChainConfig"
+
+import { useState } from '@/store';
 const jdenticon = require("jdenticon");
 const jdenticon_config = {
 	lightness: {
@@ -51,6 +52,9 @@ export default {
 			svg: null
 		}
 	},
+	setup() {
+		return {state: useState()}
+	},
 	created() {
 		this.svg = jdenticon.toSvg(this.address, this.size, jdenticon_config);
 	},
@@ -60,7 +64,7 @@ export default {
 			return addr.substring(0, 6) + "[...]" + addr.substr(-4)
 		},
 		getLink: function () {
-			return ChainConfig.explorer + "/address/" + this.address;
+			return this.state.currentChain.explorer + "/address/" + this.address;
 		},
 	}
 }

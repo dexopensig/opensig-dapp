@@ -16,6 +16,9 @@
 						<li :class="['nav-item', !$libRoute.isLinkActive('/settings/tokens', false)||'selected']">
 							<router-link class="nav-link" to="/settings/tokens">Tokens</router-link>
 						</li>
+						<li :class="['nav-item', !$libRoute.isLinkActive('/settings/chains', false)||'selected']">
+							<router-link class="nav-link" to="/settings/chains">Chains</router-link>
+						</li>
 					</ul>
 				</div>
 				<div class="col-auto">

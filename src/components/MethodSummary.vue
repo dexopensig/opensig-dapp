@@ -48,7 +48,8 @@ export default {
 		hexData: {default: ""},
 		address: {default:""},
 		value: {default:0},
-		displayDecimals: {default: 4}
+		displayDecimals: {default: 4},
+		scrambleValues: {default: 1}//multiplier
 	},
 	data(){
 		return {
@@ -110,7 +111,7 @@ export default {
 						$component = h(HumanizedTimestamp, { timestamp: $map.mappedData.timestamp });
 					} else if($map.mappedData.type == "tokenAmount"){
 						$component = h(HumanizedTokenAmount, {
-							amount: $map.mappedData.value,
+							amount: new BigNumber($map.mappedData.value).times(this.scrambleValues).toFixed(0),
 							decimals: $map.mappedData.decimals,
 							displayDecimals: this.displayDecimals,
 							symbol: $map.mappedData.symbol,
@@ -120,7 +121,7 @@ export default {
 					$components.push($component)
 				}else if($refName == '$value'){
 					$components.push(h(HumanizedTokenAmount, {
-						amount: this.value,
+						amount: new BigNumber(this.value).times(this.scrambleValues).toFixed(0),
 						decimals: 18,
 						displayDecimals: this.displayDecimals,
 						symbol: '',
@@ -139,7 +140,7 @@ export default {
 
 	methods:{
 		formatValue(val){
-			return new BigNumber(val).div(10**18).toFixed(4);
+			return new BigNumber(val).times(this.scrambleValues).div(10**18).toFixed(4);
 		}
 	}
 }
